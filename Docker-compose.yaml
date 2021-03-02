@@ -18,6 +18,7 @@ services:
     image: nodejs
     container_name: nodejs
     restart: always
+    entrypoint: dockerize -wait tcp://mysql:3306 -timeout 60s
     depends_on: 
       - mysql
     ports:
