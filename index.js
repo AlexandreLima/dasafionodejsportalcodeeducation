@@ -20,7 +20,6 @@ app.get('/', (req, res) => {
     connection.query('SELECT * FROM people', (error, results) => {
         res.send('<h1>Full Cycle Rocks! </h1> <br>' + results[0].name);
     });
-    
 });
 
  function executeQuery(sql) {
