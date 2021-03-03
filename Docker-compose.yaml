@@ -10,20 +10,6 @@ services:
       "MYSQL_DATABASE": "nodejsdesafio"
       "MYSQL_ROOT_PASSWORD": "rootpassword"
     networks: 
-     - desafio-node
-  nodejs:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: nodejs
-    container_name: nodejs
-    restart: always
-    entrypoint: dockerize -wait tcp://mysql:3306 -timeout 60s
-    depends_on: 
-      - mysql
-    ports:
-      - "3000:3000"
-    networks: 
      - desafio-node 
   webserver:
     image : nginx:mainline-alpine
@@ -35,8 +21,20 @@ services:
      - desafio-node
     volumes:
       - ./nginx-conf:/etc/nginx/conf.d
-    depends_on:
-      - nodejs
+  nodejs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nodejs
+    container_name: nodejs
+    restart: always
+    entrypoint: dockerize -wait tcp://mysql:3306 -timeout 60s node index.js
+    depends_on: 
+      - mysql
+    ports:
+      - "3000:3000"
+    networks: 
+     - desafio-node
 networks: 
   desafio-node:
     driver: bridge
